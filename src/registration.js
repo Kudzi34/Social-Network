@@ -1,6 +1,6 @@
 import React from "react";
 
-const axios = require("axios");
+const axios = require("./axios");
 
 class Registration extends React.Component {
     constructor(props) {

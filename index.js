@@ -5,6 +5,7 @@ const cookieSession = require("cookie-session");
 const db = require("./db");
 const bcrypt = require("./bcrypt");
 const secrets = require("./secrets.json");
+const csurf = require("csurf");
 
 app.use(express.static("./public"));
 app.use(compression());
@@ -15,6 +16,14 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
+
+app.use(csurf());
+
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
+
 app.use(require("body-parser").json());
 
 if (process.env.NODE_ENV != "production") {
