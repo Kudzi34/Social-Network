@@ -1,0 +1,15 @@
+* {
+    background-image: url("/zimlogo.png");
+    background-size: cover;
+    background-color: black;
+    z-index: 1;
+}
+
+.wrapper {
+    display: block;
+    justify-content: center;
+}
+.registration {
+    display: flex;
+    justify-content: center;
+}
