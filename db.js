@@ -4,7 +4,7 @@ const secrets = require("./secrets.json");
 const dbUrl = secrets.dbUrl;
 const db = spicedPg(dbUrl);
 
-module.exports.createUser = (firstname, lastname, email, hashedpassword) => {
+exports.createUser = (firstname, lastname, email, hashedpassword) => {
     return db.query(
         `
         INSERT INTO users (firstname, lastname, email, hashedpassword)
@@ -22,4 +22,14 @@ module.exports.createUser = (firstname, lastname, email, hashedpassword) => {
 
 exports.getUsers = function() {
     return db.query("SELECT * FROM users");
+};
+
+exports.getUserById = id => {
+    return db.query(
+        `SELECT *
+		     FROM users
+		 	 WHERE id = $1
+			`,
+        [id]
+    );
 };

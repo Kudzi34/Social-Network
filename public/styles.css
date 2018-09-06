@@ -13,3 +13,11 @@
     display: flex;
     justify-content: center;
 }
+.main-appdiv {
+}
+.imagediv {
+    border: black solid 3px;
+    border-radius: 20px;
+    position: relative;
+    float: right;
+}

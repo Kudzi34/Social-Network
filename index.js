@@ -6,6 +6,8 @@ const db = require("./db");
 const bcrypt = require("./bcrypt");
 const secrets = require("./secrets.json");
 const csurf = require("csurf");
+const s3 = require("./s3");
+const bp = require("body-parser");
 
 app.use(express.static("./public"));
 app.use(compression());
@@ -36,15 +38,32 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-/////////DO NOT TOUCH///////////////////////////////////////////////////////////
 
-app.get("*", function(req, res) {
-    res.sendFile(__dirname + "/index.html");
+var multer = require("multer");
+var uidSafe = require("uid-safe");
+var path = require("path");
+
+var diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
 });
-////////////////////////////////////////////////////////////////////////////////
+
+var uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+
 app.get("/welcome", function(req, res) {
     if (req.session.userId) {
-        return res.redirect("/welcome");
+        return res.redirect("/");
     }
     res.sendFile(__dirname + "/index.html");
 });
@@ -55,6 +74,19 @@ app.get("/", (req, res) => {
     }
     res.sendFile(__dirname + "/index.html");
 });
+app.get("/user", (req, res) => {
+    console.log("running get/user", req.session);
+    db.getUserById(req.session.userId)
+
+        .then(results => {
+            //req.session = results.rows[0];
+            console.log("This is results", results.rows[0]);
+            res.json(results.rows[0]);
+        })
+        .catch(err => {
+            console.log("there is an error in get user", err);
+        });
+});
 
 app.post("/registration", (req, res) => {
     let { firstname, lastname, email, password } = req.body;
@@ -62,10 +94,11 @@ app.post("/registration", (req, res) => {
     bcrypt
         .hashPass(password)
         .then(hash => {
-            db.createUser(firstname, lastname, email, hash);
+            return db.createUser(firstname, lastname, email, hash);
         })
-        .then(id => {
-            req.session.userId = id;
+        .then(results => {
+            req.session.userId = results.rows[0].id;
+            console.log("session", req.session.userId);
             res.json({
                 success: true
             });
@@ -101,6 +134,11 @@ app.post("/login", (req, res) => {
             });
         });
 });
+//////////////////Do NOT TOUCH////////////////////////////////////////////////////////////////////
+app.get("*", function(req, res) {
+    res.sendFile(__dirname + "/index.html");
+});
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(8080, function() {
     console.log("I'm listening.");
