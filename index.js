@@ -8,6 +8,10 @@ const secrets = require("./secrets.json");
 const csurf = require("csurf");
 const s3 = require("./s3");
 const bp = require("body-parser");
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
+const config = require("./config.json");
 
 app.use(express.static("./public"));
 app.use(compression());
@@ -38,10 +42,6 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-
-var multer = require("multer");
-var uidSafe = require("uid-safe");
-var path = require("path");
 
 var diskStorage = multer.diskStorage({
     destination: function(req, file, callback) {
@@ -75,12 +75,10 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 app.get("/user", (req, res) => {
-    console.log("running get/user", req.session);
     db.getUserById(req.session.userId)
 
         .then(results => {
-            //req.session = results.rows[0];
-            console.log("This is results", results.rows[0]);
+            //console.log("This is results", results.rows[0]);
             res.json(results.rows[0]);
         })
         .catch(err => {
@@ -90,7 +88,6 @@ app.get("/user", (req, res) => {
 
 app.post("/registration", (req, res) => {
     let { firstname, lastname, email, password } = req.body;
-    console.log(firstname, lastname, email, password);
     bcrypt
         .hashPass(password)
         .then(hash => {
@@ -130,6 +127,28 @@ app.post("/login", (req, res) => {
         })
         .catch(error => {
             res.json({
+                success: false
+            });
+        });
+});
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    //console.log("working", req.file.filename);
+
+    // update image_url in users table
+    db.updateImage(config.s3Url + req.file.filename, req.session.userId)
+        .then(() => {
+            console.log(config.s3Url + req.file.filename, req.session.userId);
+            let imageUrl = config.s3Url + req.file.filename;
+            req.session.imageUrl = imageUrl;
+            //console.log("this is my ", req.session.imageUrl);
+            // send back from db to vue to render
+            res.json({
+                imageUrl: req.session.imageUrl
+            });
+        })
+        .catch(error => {
+            console.log("this error in image uplod", error);
+            res.status(500).json({
                 success: false
             });
         });

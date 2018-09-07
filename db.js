@@ -33,3 +33,13 @@ exports.getUserById = id => {
         [id]
     );
 };
+exports.updateImage = (imageUrl, user_id) => {
+    return db.query(
+        `
+        UPDATE users
+        SET imageUrl = $1
+        WHERE id = $2
+        `,
+        [imageUrl, user_id]
+    );
+};
