@@ -18,15 +18,18 @@ export default function Uploader(props) {
 
     return (
         <div className="uploaderPopup">
-            <input
-                id="myInput"
-                type="file"
-                accept="image/*"
-                onChange={submit}
-            />
-            <label className="uploadLabel" htmlFor="myInput">
-                Update
-            </label>
+            <div className="loader-innerdiv">
+                <input
+                    id="myInput"
+                    type="file"
+                    accept="image/*"
+                    onChange={submit}
+                />
+
+                <label className="uploadLabel" htmlFor="myInput">
+                    Update
+                </label>
+            </div>
         </div>
     );
 }

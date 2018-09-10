@@ -43,3 +43,12 @@ exports.updateImage = (imageUrl, user_id) => {
         [imageUrl, user_id]
     );
 };
+
+exports.uploadBio = (bio, id) => {
+    const q = `
+    UPDATE users
+    SET bio = $1
+    WHERE id = $2
+    `;
+    return db.query(q, [bio, id]);
+};

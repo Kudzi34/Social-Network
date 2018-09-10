@@ -14,7 +14,6 @@ export default function Welcome() {
         <div className="wrapper">
             <Logo />
             <h1>Where Zimbabweans connect</h1>
-            <p> Connecting Zimbabweans Abroad </p>
 
             <HashRouter>
                 <div>

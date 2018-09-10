@@ -78,12 +78,9 @@ app.get("/user", (req, res) => {
     db.getUserById(req.session.userId)
 
         .then(results => {
-            //console.log("This is results", results.rows[0]);
             res.json(results.rows[0]);
         })
-        .catch(err => {
-            console.log("there is an error in get user", err);
-        });
+        .catch(err => {});
 });
 
 app.post("/registration", (req, res) => {
@@ -132,27 +129,31 @@ app.post("/login", (req, res) => {
         });
 });
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    //console.log("working", req.file.filename);
-
     // update image_url in users table
     db.updateImage(config.s3Url + req.file.filename, req.session.userId)
         .then(() => {
-            console.log(config.s3Url + req.file.filename, req.session.userId);
             let imageUrl = config.s3Url + req.file.filename;
             req.session.imageUrl = imageUrl;
-            //console.log("this is my ", req.session.imageUrl);
             // send back from db to vue to render
             res.json({
                 imageUrl: req.session.imageUrl
             });
         })
         .catch(error => {
-            console.log("this error in image uplod", error);
             res.status(500).json({
                 success: false
             });
         });
 });
+
+app.post("/profile", (req, res) => {
+    db.uploadBio(req.body.bio, req.session.userId).catch(err => {
+        res.status(500).json({
+            success: false
+        });
+    });
+});
+
 //////////////////Do NOT TOUCH////////////////////////////////////////////////////////////////////
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");
@@ -160,5 +161,5 @@ app.get("*", function(req, res) {
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(8080, function() {
-    console.log("I'm listening.");
+    console.log("We working here.");
 });
