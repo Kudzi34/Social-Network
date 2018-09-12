@@ -11,8 +11,8 @@ export default function Uploader(props) {
         fd.append("file", file);
 
         axios.post("/upload", fd).then(({ data }) => {
-            props.updateImage(data.imageUrl);
-            console.log("imageurl", imageUrl);
+            props.updateImage(data.imageurl);
+            console.log("imageurl", imageurl);
         });
     }
 

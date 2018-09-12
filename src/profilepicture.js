@@ -4,7 +4,7 @@ export default function Profilepicture(props) {
     return (
         <div className="imagediv2">
             <img
-                src={props.imageUrl}
+                src={props.imageurl}
                 className="propic2"
                 onClick={props.clickHandler}
             />

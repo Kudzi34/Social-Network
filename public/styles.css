@@ -1,6 +1,6 @@
 * {
     background-image: url("/zimlogo.png");
-    background-size: cover;
+
     margin: 0;
 }
 html,
@@ -47,6 +47,12 @@ body {
     width: 100px;
     height: 100px;
 }
+.propic3 {
+    width: 150px;
+    height: 150px;
+    border: black 2px solid;
+    border-radius: 5px;
+}
 .uploaderPopup {
     display: flex;
     justify-content: center;
@@ -80,4 +86,14 @@ textarea {
 .profilediv {
     display: inline-block;
     width: 100%;
+}
+.otherprofile {
+    width: 300px;
+    display: block;
+    border: dotted 2px black;
+}
+.friendButton {
+    width: 70px;
+    height: 70px;
+    background-color: black;
 }

@@ -27,8 +27,8 @@ exports.getUsers = function() {
 exports.getUserById = id => {
     return db.query(
         `SELECT *
-		     FROM users
-		 	 WHERE id = $1
+		 FROM users
+		 WHERE id = $1
 			`,
         [id]
     );
@@ -51,4 +51,52 @@ exports.uploadBio = (bio, id) => {
     WHERE id = $2
     `;
     return db.query(q, [bio, id]);
+};
+
+exports.getUserInfo = id => {
+    return db.query(
+        `
+    SELECT *
+    FROM users
+    WHERE id = $1
+    `,
+        [id]
+    );
+};
+
+exports.checkIfFriends = (reciever_id, sender_id) => {
+    const q = `
+    SELECT reciever_id, sender_id, status
+    FROM friendships
+    WHERE (reciever_id = $1 AND sender_id =$2)
+    OR (reciever_id = $2 AND sender_id = $1
+    )
+    `;
+    return db.query(q, [reciever_id, sender_id]);
+};
+exports.createFriendRequest = (status, reciever_id, sender_id) => {
+    const q = `
+    UPDATE friendships
+    SET status = $1
+    WHERE (reciever_id =$2 AND sender_id =$3)
+    OR (reciever_id =$3 AND sender_id = $2)
+    RETURNING status
+    `;
+    return db.query(q, [status, reciever_id, sender_id]);
+};
+exports.newFriendRequest = (status, reciever_id, sender_id) => {
+    const q = `
+    INSERT INTO friendships (status, reciever_id, sender_id)
+    VALUES ($1, $2, $3)
+    RETURNING status
+    `;
+    return db.query(q, [status, reciever_id, sender_id]);
+};
+exports.deleteFriendRequest = (reciever_id, sender_id) => {
+    const q = `
+    DELETE FROM friendships
+    WHERE (reciever_id =$1 AND sender_id =$2)
+    OR (reciever_id =$2 AND sender_id = $1)
+    `;
+    return db.query(q, [reciever_id, sender_id]);
 };

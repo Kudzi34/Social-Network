@@ -18,7 +18,7 @@ submit() {
     const fd = new FormData;
     axios.post('/upload', fd).then(
         ({data}) => {
-            this.props.updateImage(data.imageUrl)
+            this.props.updateImage(data.imageurl)
         }
     )
 }

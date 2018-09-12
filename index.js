@@ -78,6 +78,7 @@ app.get("/user", (req, res) => {
     db.getUserById(req.session.userId)
 
         .then(results => {
+            console.log("info by getUserById ", results.rows);
             res.json(results.rows[0]);
         })
         .catch(err => {});
@@ -132,11 +133,11 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     // update image_url in users table
     db.updateImage(config.s3Url + req.file.filename, req.session.userId)
         .then(() => {
-            let imageUrl = config.s3Url + req.file.filename;
-            req.session.imageUrl = imageUrl;
+            let imageurl = config.s3Url + req.file.filename;
+            req.session.imageurl = imageurl;
             // send back from db to vue to render
             res.json({
-                imageUrl: req.session.imageUrl
+                imageurl: req.session.imageurl
             });
         })
         .catch(error => {
@@ -154,6 +155,55 @@ app.post("/profile", (req, res) => {
     });
 });
 
+app.get("/get-user/:userId", (req, res) => {
+    db.getUserInfo(req.params.userId)
+        .then(results => {
+            res.json(results.rows[0]);
+        })
+        .catch(error => {
+            console.log("server failure in get-user ", error);
+        });
+});
+app.get("/friends", (req, res) => {
+    console.log("Current User:", req.session.userId);
+    console.log("req in Request:", req.query.reciever_id);
+    var reciever_id = req.query.reciever_id;
+    var sender_id = req.session.userId;
+    db.checkIfFriends(reciever_id, sender_id)
+        .then(results => {
+            console.log("Friend request: ", sender_id);
+            res.json(results.rows[0]);
+        })
+        .catch(error => {
+            console.log("Error in GET FRIEND BUTTON STATUS", error);
+        });
+});
+app.post("/friendRequest", (req, res) => {
+    var status = req.body.status;
+    var sender_id = req.session.userId;
+    var reciever_id = req.body.reciever_id;
+    if (status == 1) {
+        db.newFriendRequest(status, reciever_id, sender_id).then(results => {
+            console.log("Result In new Making Friend row", results.rows[0]);
+            res.json(results.rows[0]);
+        });
+    } else {
+        db.createFriendRequest(status, reciever_id, sender_id).then(results => {
+            console.log("Results form sending request", results.rows[0]);
+            res.json(results.rows[0]);
+        });
+    }
+});
+app.post("/deleteFriendRequest", (req, res) => {
+    console.log("Delete your friend from your life");
+    var sender_id = req.session.userId.rows;
+    console.log(sender_id);
+    var reciever_id = req.body.reciever_id;
+    console.log(reciever_id);
+    db.deleteFriendRequest(reciever_id, sender_id).then(() => {
+        res.json("");
+    });
+});
 //////////////////Do NOT TOUCH////////////////////////////////////////////////////////////////////
 app.get("*", function(req, res) {
     res.sendFile(__dirname + "/index.html");

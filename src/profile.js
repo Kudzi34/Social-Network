@@ -1,10 +1,12 @@
 import React from "react";
 
 export default function Profile(props) {
+    console.log("props inside of bio", props);
+
     return (
         <div className="profilediv-main">
             <img
-                src={props.imageUrl}
+                src={props.imageurl}
                 className="propic"
                 onClick={props.clickHandler}
             />
@@ -12,6 +14,7 @@ export default function Profile(props) {
                 <h1>
                     {props.firstName} {props.lastName}
                 </h1>
+                {props.bio ? <p>{props.bio}</p> : <p>update Bio</p>}
 
                 {props.showBio ? (
                     <textarea

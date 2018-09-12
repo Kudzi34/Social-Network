@@ -6,6 +6,7 @@ import Profilepicture from "./profilepicture";
 import Uploader from "./uploader";
 import Profile from "./profile";
 import { BrowserRouter, Route } from "react-router-dom";
+import Otherprofile from "./otherprofile";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ export default class App extends React.Component {
             lastname: "",
             email: "",
             bio: "",
-            imageUrl: "image2.png",
+            imageurl: "/image2.png",
             showBio: false
         };
         this.updateImage = this.updateImage.bind(this);
@@ -26,20 +27,22 @@ export default class App extends React.Component {
     }
     componentDidMount() {
         axios.get("/user").then(({ data }) => {
-            if (!data.imageUrl) {
-                data.imageUrl = "image2.png";
+            console.log("data from app", data);
+            if (!data.imageurl) {
+                data.imageurl = "/image2.png";
             }
             this.setState(data);
         });
     }
+
     makeUploaderVisible() {
         this.setState({
             uploaderIsVisible: true
         });
     }
-    updateImage(imageUrl) {
+    updateImage(imageurl) {
         this.setState({
-            imageUrl: imageUrl,
+            imageurl: imageurl,
             uploaderIsVisible: false
         });
     }
@@ -71,7 +74,7 @@ export default class App extends React.Component {
                 <div>
                     <Logo />
                     <Profilepicture
-                        imageUrl={this.state.imageUrl}
+                        imageurl={this.state.imageurl}
                         firstname={this.state.firstname}
                         lastname={this.state.lastname}
                         clickHandler={this.makeUploaderVisible}
@@ -80,27 +83,39 @@ export default class App extends React.Component {
                 {this.state.uploaderIsVisible && (
                     <Uploader updateImage={this.updateImage} />
                 )}
+                <div>
+                    <BrowserRouter>
+                        <div>
+                            <Route
+                                exact
+                                path="/"
+                                render={() => (
+                                    <div className="profilediv">
+                                        <Profile
+                                            id={this.state.id}
+                                            firstName={this.state.firstname}
+                                            lastName={this.state.lastname}
+                                            bio={this.state.bio}
+                                            imageurl={this.state.imageurl}
+                                            showBio={this.state.showBio}
+                                            toggleBio={this.toggleBio}
+                                            setBio={this.setBio}
+                                            clickHandler={
+                                                this.makeUploaderVisible
+                                            }
+                                        />
+                                    </div>
+                                )}
+                            />
 
-                <BrowserRouter>
-                    <Route
-                        path="/"
-                        render={() => (
-                            <div className="profilediv">
-                                <Profile
-                                    id={this.state.id}
-                                    firstName={this.state.firstname}
-                                    lastName={this.state.lastname}
-                                    bio={this.state.bio}
-                                    imageUrl={this.state.imageUrl}
-                                    showBio={this.state.showBio}
-                                    toggleBio={this.toggleBio}
-                                    setBio={this.setBio}
-                                    clickHandler={this.makeUploaderVisible}
-                                />
-                            </div>
-                        )}
-                    />
-                </BrowserRouter>
+                            <Route
+                                exact
+                                path="/user/:userId"
+                                component={Otherprofile}
+                            />
+                        </div>
+                    </BrowserRouter>
+                </div>
             </div>
         );
     }
