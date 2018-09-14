@@ -1,5 +1,5 @@
 * {
-    background-image: url("/zimlogo.png");
+    background-color: 
 
     margin: 0;
 }
@@ -95,5 +95,5 @@ textarea {
 .friendButton {
     width: 70px;
     height: 70px;
-    background-color: black;
+    background-color: silver;
 }

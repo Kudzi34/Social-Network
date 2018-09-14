@@ -18,7 +18,7 @@ export default class Friendshipbutton extends Component {
         // var revieverId = this.props;
 
         axios
-            .get("/friends", {
+            .get("/get-friend-status", {
                 params: {
                     reciever_id: this.props.reciever_id
                 }

@@ -13,14 +13,14 @@ export default class Otherprofile extends Component {
             .get(`/get-user/${this.props.match.params.userId}`)
             .then(response => {
                 console.log("data from axios get-user", response);
-                if (response.data.loggedProfile) {
+                if (response.data.userId) {
                     console.log("this is loggedProfile");
                     this.props.history.push("/");
                 }
 
                 let otherUser = response.data;
                 if (!response.data.imageurl) {
-                    response.data.imageurl = "/image2.png";
+                    otherUser.imageurl = "/image2.png";
                 }
 
                 this.setState({
@@ -39,8 +39,6 @@ export default class Otherprofile extends Component {
     render() {
         return (
             <div className="otherprofile">
-                <h1>PROFILE</h1>
-
                 <img src={this.state.imageurl} className="propic3" />
                 <div className="otherUser-info">
                     <h1>
@@ -48,7 +46,7 @@ export default class Otherprofile extends Component {
                     </h1>
                     <p> Bio: </p>
                     <p className="profileBio"> {this.state.bio} </p>
-                    <Link to="/user/2">User 2</Link>
+                    <Link to="/user/2">User</Link>
                 </div>
                 <Friendshipbutton
                     reciever_id={this.props.match.params.userId}
