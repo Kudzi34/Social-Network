@@ -1,12 +1,5 @@
 import axios from "./axios";
 
-export function addAnimals() {
-    return {
-        type: "ADD_ANIMALS",
-        animals
-    };
-}
-
 export async function receiveFriends() {
     const { data } = await axios.get("/getFriends");
     //console.log("Data in ACTIONS in Receive Friends", data);
@@ -41,5 +34,27 @@ export async function acceptRequest(props) {
     return {
         type: "ACCEPT_REQUEST",
         receiver_id
+    };
+}
+
+export async function onlineUsers(users) {
+    // actions always return the object
+    return {
+        type: "ONLINE_USERS",
+        users: users
+    };
+}
+
+export async function disconnectUser(userId) {
+    return {
+        type: "DISCONNECT",
+        userId
+    };
+}
+
+export async function newUserOnline(user) {
+    return {
+        type: "NEW_USER_ONLINE",
+        user: user
     };
 }

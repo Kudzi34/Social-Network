@@ -258,6 +258,88 @@ app.get("*", function(req, res) {
 server.listen(8080, function() {
     console.log("We working here.");
 });
+
+let onlineUsers = {};
+
+io.on("connection", function(socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+
+    if (!socket.request.session || !socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    // store socketid and userid in wariables
+
+    const userId = socket.request.session.userId;
+    const socketId = socket.id;
+
+    // add socket id with user id to the object
+    onlineUsers[socketId] = userId;
+
+    // some code
+
+    let arrayOfUserIds = Object.values(onlineUsers); // gives an array of all righthand values of the Object
+
+    console.log("Our cool array of users", arrayOfUserIds);
+    // put to DB
+
+    db.getUsersByIds(arrayOfUserIds).then(results => {
+        console.log("Array of Users: ", results.rows);
+        // results = array of objects that contains users name, email, etc.
+
+        // now we have to take this results and emit them.
+
+        socket.emit("onlineUsers", results.rows);
+    });
+
+    //     // we can also emit to everyone but the person who has just connected
+
+    if (
+        arrayOfUserIds.filter(id => id == socket.request.session.userId)
+            .length == 1
+    ) {
+        console.log("We passed the condition");
+        db.getUserInfo(socket.request.session.userId).then(results => {
+            console.log("New user logged in info: ", results.rows[0]);
+
+            socket.broadcast.emit("newUserOnline", results.rows);
+        });
+    }
+    //     socket.broadcast.emit('userJoined', payload)
+    //
+    //
+    //
+    //  prevent one user to appear more
+    //
+    //
+    socket.on("disconnect", function() {
+        delete onlineUsers[socket.id];
+
+        console.log("DISCONNECT: ", onlineUsers);
+        console.log(
+            "CHECK DISCONNECT",
+            Object.values(onlineUsers).includes(userId)
+        );
+
+        if (!Object.values(onlineUsers).includes(userId)) {
+            console.log("Id is not there");
+            console.log(`socket with the id ${socket.id} is now disconnected`);
+
+            io.sockets.emit("disonnect", userId);
+        }
+
+        // in this situation there is no difference between emit and broadcast
+        // plurar if io.sockets
+    });
+    //
+    //     // function getUsersByIds(arrayOfIds) {
+    //     // const query = `SELECT * FROM users WHERE id = ANY($1)`;
+    //     // return db.query(query, [arrayOfIds]);
+    // }
+    //
+    //     console.log("online users: ", onlineUsers);
+});
+
 // let onlineUsers = {};
 //
 // io.on("connection", function(socket) {

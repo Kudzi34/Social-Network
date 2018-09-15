@@ -111,3 +111,8 @@ exports.receiveFriends = id => {
 `;
     return db.query(q, [id]);
 };
+
+exports.getUsersByIds = arrayOfIds => {
+    const q = `SELECT firstname, lastname, id, bio, imageurl FROM users WHERE id = ANY($1)`;
+    return db.query(q, [arrayOfIds]);
+};

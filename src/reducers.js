@@ -44,6 +44,31 @@ export default function(state = INITIAL_STATE, action) {
             })
         };
     }
+    if (action.type == "ONLINE_USERS") {
+        state = {
+            ...state,
+            onlineUsers: action.users
+        };
+    }
+
+    if (action.type == "DISCONNECT") {
+        console.log("reciever ID", action.userId);
+        console.log("current state of users: ", state);
+        state = {
+            ...state,
+            onlineUsers: state.onlineUsers.filter(
+                user => user.id != action.user.id
+            )
+        };
+    }
+
+    if (action.type == "NEW_USER_ONLINE") {
+        console.log("Out nice new user: ", action.user);
+        state = {
+            ...state,
+            onlineUsers: state.onlineUsers.concat(action.user)
+        };
+    }
 
     console.log("Our state", state);
     return state;
