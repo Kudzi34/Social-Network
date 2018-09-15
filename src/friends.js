@@ -1,5 +1,4 @@
 import React from "react";
-
 import { receiveFriends, unfriend, acceptRequest } from "./actions.js";
 import { Link } from "react-router-dom";
 

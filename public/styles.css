@@ -1,5 +1,5 @@
 * {
-    background-color: 
+    background-color: #4191f4;
 
     margin: 0;
 }
@@ -43,14 +43,14 @@ body {
 .propic {
     position: relative;
     float: right;
-    border: black 2px solid;
+    border: white 2px solid;
     width: 100px;
     height: 100px;
 }
 .propic3 {
     width: 150px;
     height: 150px;
-    border: black 2px solid;
+    border: white 2px solid;
     border-radius: 5px;
 }
 .uploaderPopup {

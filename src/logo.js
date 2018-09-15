@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Logo() {
     let logoStyle = {
-        color: "green",
+        color: "white",
         fontSize: "50px",
         float: "left"
     };
