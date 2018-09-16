@@ -33,28 +33,40 @@ class Registration extends React.Component {
     render() {
         return (
             <div className="registration">
-                {this.state.error && <div className="error">error message</div>}
-                <input
-                    name="firstname"
-                    placeholder="firstname"
-                    onChange={this.handleChange}
-                />
-                <input
-                    name="lastname"
-                    placeholder="lastname"
-                    onChange={this.handleChange}
-                />
-                <input
-                    name="email"
-                    placeholder="email"
-                    onChange={this.handleChange}
-                />
-                <input
-                    name="password"
-                    placeholder="password"
-                    onChange={this.handleChange}
-                />
-                <button onClick={this.submit}>Register</button>
+                <div className="reg-div">
+                    {this.state.error && (
+                        <div className="error">error message</div>
+                    )}
+                    <input
+                        name="firstname"
+                        placeholder="firstname"
+                        onChange={this.handleChange}
+                    />
+                </div>
+                <div className="reg-div">
+                    <input
+                        name="lastname"
+                        placeholder="lastname"
+                        onChange={this.handleChange}
+                    />
+                </div>
+                <div className="reg-div">
+                    <input
+                        name="email"
+                        placeholder="email"
+                        onChange={this.handleChange}
+                    />
+                </div>
+                <div className="reg-div">
+                    <input
+                        name="password"
+                        placeholder="password"
+                        onChange={this.handleChange}
+                    />
+                </div>
+                <button className="button" onClick={this.submit}>
+                    Register
+                </button>
             </div>
         );
     }

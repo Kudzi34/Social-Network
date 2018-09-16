@@ -39,15 +39,16 @@ export default class Otherprofile extends Component {
     render() {
         return (
             <div className="otherprofile">
-                <img src={this.state.imageurl} className="propic3" />
-                <div className="otherUser-info">
-                    <h1>
-                        {this.state.firstname} {this.state.lastname}
-                    </h1>
-                    <p> Bio: </p>
-                    <p className="profileBio"> {this.state.bio} </p>
-                    <Link to="/user/2">User</Link>
+                <div className="image3-div">
+                    <img src={this.state.imageurl} className="propic3" />
                 </div>
+                <h2>Firstname:{this.state.firstname}</h2>
+                <h2>Lastname:{this.state.lastname}</h2>
+                <div className="bio-div">
+                    <h3> Bio: </h3>
+                    <p className="profileBio"> {this.state.bio} </p>
+                </div>
+
                 <Friendshipbutton
                     reciever_id={this.props.match.params.userId}
                 />

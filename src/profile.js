@@ -11,19 +11,20 @@ export default function Profile(props) {
                 onClick={props.clickHandler}
             />
             <div className="profileInfo">
-                <h1>
-                    {props.firstName} {props.lastName}
-                </h1>
-                {props.bio ? <p>{props.bio}</p> : <p>update Bio</p>}
+                <h3>First:{props.firstName}</h3>
+                <h3>Last:{props.lastName}</h3>
+                <div className="bio-div">
+                    {props.bio ? <p>Bio:{props.bio}</p> : <p>update Bio</p>}
 
-                {props.showBio ? (
-                    <textarea
-                        onKeyDown={props.setBio}
-                        defaultValue={props.bio}
-                    />
-                ) : (
-                    <p onClick={props.toggleBio}>Update your bio.</p>
-                )}
+                    {props.showBio ? (
+                        <textarea
+                            onKeyDown={props.setBio}
+                            defaultValue={props.bio}
+                        />
+                    ) : (
+                        <p onClick={props.toggleBio}>Update your bio.</p>
+                    )}
+                </div>
             </div>
         </div>
     );

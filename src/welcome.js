@@ -13,7 +13,6 @@ export default function Welcome() {
     return (
         <div className="wrapper">
             <Logo />
-            <h1>Where Zimbabweans connect</h1>
 
             <HashRouter>
                 <div>
