@@ -38,6 +38,7 @@ class Registration extends React.Component {
                         <div className="error">error message</div>
                     )}
                     <input
+                        className="input"
                         name="firstname"
                         placeholder="firstname"
                         onChange={this.handleChange}
@@ -45,6 +46,7 @@ class Registration extends React.Component {
                 </div>
                 <div className="reg-div">
                     <input
+                        className="input"
                         name="lastname"
                         placeholder="lastname"
                         onChange={this.handleChange}
@@ -52,6 +54,7 @@ class Registration extends React.Component {
                 </div>
                 <div className="reg-div">
                     <input
+                        className="input"
                         name="email"
                         placeholder="email"
                         onChange={this.handleChange}
@@ -59,6 +62,7 @@ class Registration extends React.Component {
                 </div>
                 <div className="reg-div">
                     <input
+                        className="input"
                         name="password"
                         placeholder="password"
                         onChange={this.handleChange}

@@ -17,12 +17,12 @@ class OnlineUsers extends React.Component {
             );
         }
         return (
-            <div className="onlineUsersBox">
+            <div className="onlineUsers-div">
                 <div className="realFriends">
                     <h2> Online Users </h2>
                     {this.props.users.map(user => (
                         <div key={user.id}>
-                            <img src={user.imageurl} />
+                            <img className="images" src={user.imageurl} />
                             <div className="nameOfTheFriend">
                                 <p>
                                     {user.firstname} {user.lastname}

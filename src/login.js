@@ -33,11 +33,13 @@ class Login extends React.Component {
             <div className="login">
                 {this.state.error && <div className="error">error message</div>}
                 <input
+                    className="input"
                     name="email"
                     placeholder="email"
                     onChange={this.handleChange}
                 />
                 <input
+                    className="input"
                     name="password"
                     placeholder="password"
                     onChange={this.handleChange}

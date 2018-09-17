@@ -22,11 +22,11 @@ class Friends extends React.Component {
         }
         return (
             <div className="boxOfFriends">
-                <div className="realFriends">
-                    <h2> Friends </h2>
+                <div className="Acceptedfriends-div">
+                    <h3> Friends </h3>
                     {this.props.friends.map(friend => (
                         <div key={friend.id}>
-                            <img src={friend.imageurl} />
+                            <img className="images" src={friend.imageurl} />
                             <div className="nameOfTheFriend">
                                 <p>
                                     {friend.firstname} {friend.lastname}
@@ -44,8 +44,8 @@ class Friends extends React.Component {
                         </div>
                     ))}
                 </div>
-                <div className="almostFriends">
-                    <h2> Friend Requests From: </h2>
+                <div className="requestslist-div">
+                    <h3> Friend Requests: </h3>
                     {this.props.wannabes.map(friend => (
                         <div key={friend.id}>
                             <img src={friend.imageurl} />
