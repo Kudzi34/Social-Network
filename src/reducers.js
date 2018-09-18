@@ -70,6 +70,17 @@ export default function(state = INITIAL_STATE, action) {
         };
     }
 
+    //////chat actions//////////////////////////////////////////////
+
+    if (action.type == "CHAT_MESSAGES") {
+        state = { ...state, messages: action.messages };
+    }
+
+    if (action.type == "CHAT_MESSAGE") {
+        console.log("in add chat");
+        state = { ...state, messages: [...state.messages, action.message] };
+    }
+
     console.log("Our state", state);
     return state;
 }

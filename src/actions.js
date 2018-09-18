@@ -58,3 +58,18 @@ export async function newUserOnline(user) {
         user: user
     };
 }
+//////chat functions////////////////////////
+export function chatMessages(messages) {
+    console.log("working in actions");
+    return {
+        type: "CHAT_MESSAGES",
+        messages
+    };
+}
+
+export function chatMessage(message) {
+    return {
+        type: "CHAT_MESSAGE",
+        message
+    };
+}

@@ -17,3 +17,10 @@ CREATE TABLE friendships (
     reciever_id INTEGER NOT NULL REFERENCES users(id),
     status INTEGER NOT NULL DEFAULT 1
 );
+
+CREATE TABLE chats(
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER NOT NULL REFERENCES users(id),
+    sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    message VARCHAR(1000) not null
+);

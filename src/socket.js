@@ -1,6 +1,12 @@
 import * as io from "socket.io-client";
 
-import { onlineUsers, disconnectUser, newUserOnline } from "./actions";
+import {
+    onlineUsers,
+    disconnectUser,
+    newUserOnline,
+    chatMessages,
+    chatMessage
+} from "./actions";
 
 let socket;
 
@@ -25,6 +31,15 @@ export function getSocket(store) {
 
         store.dispatch(disconnectUser(data));
     });
+    /////chat///////////////////////////////////////////////////////////////////////////////
+    socket.on("chatMessage", message => {
+        store.dispatch(chatMessage(message));
+    });
+
+    socket.on("chatMessages", messages => {
+        console.log("messages in socket.js");
+        store.dispatch(chatMessages(messages));
+    });
 
     // socket.on('userLeft', data => {
     //     // dispatch
@@ -32,20 +47,3 @@ export function getSocket(store) {
 
     return socket;
 }
-
-// import * as io from "socket.io-client";
-// import { addAnimals } from "./actions";
-//
-// let socket;
-//
-// export function getSocket(store) {
-//     if (!socket) {
-//         socket = io.connect();
-//         socket.on("cuteAnimals", data => {
-//             store.dispatch(addAnimals(data));
-//             console.log("cuteAnimals", data);
-//             socket.on("onlineUsers", data => {});
-//         });
-//     }
-//     return socket;
-// }

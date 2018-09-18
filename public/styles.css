@@ -36,6 +36,7 @@ body {
     float: right;
 }
 .propic2 {
+    transition: 3s;
     border-radius: 100px;
     width: 200px;
     height: 200px;
@@ -43,14 +44,28 @@ body {
     position: relative;
     float: left;
 }
+.propic2:hover {
+    width: 100px;
+    height: 100px;
+}
+.propic:hover {
+    width: 100px;
+    height: 100px;
+}
 .propic {
+    transition: 3s;
     position: relative;
     border: white 2px solid;
     width: 150px;
     height: 150px;
     margin-bottom: 15px;
 }
+.propic3:hover {
+    width: 100px;
+    height: 100px;
+}
 .propic3 {
+    transition: 3s;
     margin-bottom: 10px;
     margin-top: 20px;
     width: 200px;
@@ -143,6 +158,8 @@ textarea {
 }
 
 .logo {
+    animation-name: backgroundchange;
+    animation-duration: 5s;
     border-bottom: solid silver 2px;
     text-shadow: grey 4px 4px;
     background-color: black;
@@ -160,7 +177,12 @@ textarea {
     border-radius: 10px;
     margin-bottom: 50px;
 }
+.images:hover {
+    width: 100px;
+    height: 100px;
+}
 .images {
+    transition: 3s;
     margin-right: 5px;
     height: 200px;
     width: 200px;
@@ -198,4 +220,23 @@ textarea {
     font-weight: bold;
     text-shadow: black 4px 4px;
     width: 100%;
+}
+.chats {
+    border-radius: 10px;
+    margin: 100px;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    text-shadow: black 2px 2px;
+    color: yellow;
+    border: black solid 2px;
+}
+@keyframes backgroundchange {
+    from {
+        background-color: grey;
+    }
+    to {
+        background-color: blue;
+    }
 }

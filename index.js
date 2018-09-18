@@ -260,7 +260,7 @@ server.listen(8080, function() {
 });
 
 let onlineUsers = {};
-
+//Checking connection to socket//
 io.on("connection", function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
 
@@ -268,7 +268,7 @@ io.on("connection", function(socket) {
         return socket.disconnect(true);
     }
 
-    // store socketid and userid in wariables
+    // store socketid and userid in variables
 
     const userId = socket.request.session.userId;
     const socketId = socket.id;
@@ -280,7 +280,7 @@ io.on("connection", function(socket) {
 
     let arrayOfUserIds = Object.values(onlineUsers); // gives an array of all righthand values of the Object
 
-    console.log("Our cool array of users", arrayOfUserIds);
+    console.log("Array of userIds", arrayOfUserIds);
     // put to DB
 
     db.getUsersByIds(arrayOfUserIds).then(results => {
@@ -331,53 +331,53 @@ io.on("connection", function(socket) {
         // in this situation there is no difference between emit and broadcast
         // plurar if io.sockets
     });
-    //
-    //     // function getUsersByIds(arrayOfIds) {
-    //     // const query = `SELECT * FROM users WHERE id = ANY($1)`;
-    //     // return db.query(query, [arrayOfIds]);
-    // }
-    //
-    //     console.log("online users: ", onlineUsers);
+    ////////////chat//////////////////////////////////////////////////////////////////
+    db.getRecentMessages()
+        .then(results => {
+            console.log("working!");
+            socket.emit("chatMessages", results.rows.reverse());
+        })
+        .catch(function(error) {
+            console.log("Error occured in getting chat messages", error);
+        });
+
+    socket.on("chat", message => {
+        db.saveChatMsg(userId, message)
+            .then(results => {
+                console.log("here are results in saveChatMsg", results);
+                let userInfo = Object.values(results.rows[0]);
+                db.getUserInfo(userId)
+                    .then(results => {
+                        console.log("Here is userInfo:", userInfo);
+                        io.sockets.emit(
+                            "chatMessage",
+                            Object.values({}, userInfo, results.rows[0])
+                        );
+                    })
+                    .catch(function(err) {
+                        console.log(
+                            "Error in getting chat socket on server",
+                            err
+                        );
+                    });
+            })
+            .catch(function(err) {
+                console.log("Error occured in getting chat message", err);
+            });
+    });
 });
 
-// let onlineUsers = {};
+// socket.on('chatMessages', messages => {
+//     store.dispatch(chatMessages(messages))
+// })
 //
-// io.on("connection", function(socket) {
-//     console.log(`socket with id ${socket.id}has connected!`);
-//     if (!socket.request.session || !socket.request.session.user) {
-//         return socket.disconnect(true);
-//     }
-//     console.log("socket request session:", socket.request.session);
-//     const socketId = socket.id;
-//     const userId = socket.request.session.user.id;
-//     //add socketId: userId to onlineusers object
-//     onlineUsers[socketId] = userId;
+// socket.on('newChatMessage', message => {
+//     store.dispatch(newChatMessage(message))
+// })
 //
-//     let arrayOfUserIds = object.values(onlineUsers);
-//     db.getUsersById(arrayOfUserIds).then(results => {
-//         //results = array of objects that contains
-//         //users firstname, lastname, email, etc.
-//         //emit to client
-//         //emits message to person who just connected
-//         socket.emit("onlineUsers", results);
-//     });
-//     socket.broadcast.emit("userJoined", payload);
-//     socket.on("disconnect", function() {
-//         console.log(`socket with id ${socket.id} has left`);
-//         io.sockets("userLeft", userId);
-//     });
+//     // function getUsersByIds(arrayOfIds) {
+//     // const query = `SELECT * FROM users WHERE id = ANY($1)`;
+//     // return db.query(query, [arrayOfIds]);
+// }
 //
-//     socke;
-//     let cuteAnimals = [
-//         {
-//             name: "chipmunk",
-//             score: 3
-//         },
-//         {
-//             name: "elephant",
-//             score: 1
-//         }
-//     ];
-//
-//     socket.emit("animals", cuteAnimals);
-// });
+//     console.log("online users: ", onlineUsers);

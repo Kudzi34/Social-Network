@@ -9,6 +9,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Otherprofile from "./otherprofile";
 import Friends from "./friends";
 import OnlineUsers from "./onlineUsers";
+import Chat from "./chat";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -109,7 +110,6 @@ export default class App extends React.Component {
                                     </div>
                                 )}
                             />
-
                             <Route
                                 exact
                                 path="/user/:userId"
@@ -121,6 +121,7 @@ export default class App extends React.Component {
                                 path="/onlineUsers"
                                 component={OnlineUsers}
                             />
+                            <Route exact path="/chat" component={Chat} />
                         </div>
                     </BrowserRouter>
                 </div>
