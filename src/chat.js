@@ -26,37 +26,47 @@ class Chat extends Component {
     }
 
     componentDidUpdate() {
-        this.scrollToBottom();
+        if (!this.elem) {
+            return;
+        }
+        this.elem.scrollTop = this.elem.scrollHeight - this.elem.clientHeight;
     }
     render() {
         if (!this.props.messages) {
             return <div> loading...</div>;
         }
         return (
-            <div className="Messages" ref={element => (this.element = element)}>
-                {this.props.messages.map(message => (
-                    <div className="chats" key={message.chatid}>
-                        <div>
-                            <img
-                                className="images"
-                                src={message.imageurl}
-                                alt={message.firstname}
-                            />
+            <div className="bigchat-div">
+                <div
+                    className="Messages"
+                    ref={element => (this.element = element)}
+                >
+                    {this.props.messages.map(message => (
+                        <div className="chats" key={message.chatid}>
                             <div>
-                                {message.firstname} {message.lastname}
+                                <img
+                                    className="images"
+                                    src={message.imageurl}
+                                    alt={message.firstname}
+                                />
+                                <div>
+                                    {message.firstname} {message.lastname}
+                                </div>
+                            </div>
+                            <div className="chat">
+                                <p>{message.sent}</p>
+                                <p>{message.message}</p>
                             </div>
                         </div>
-                        <div className="chat">
-                            <p>{message.sent}</p>
-                            <p>{message.message}</p>
-                        </div>
-                    </div>
-                ))}
-                <textarea
-                    className="chatmsg"
-                    onKeyDown={this.savechatMessage}
-                    placeholder="enter chat"
-                />
+                    ))}
+                </div>
+                <div>
+                    <textarea
+                        className="chatmsg"
+                        onKeyDown={this.savechatMessage}
+                        placeholder="enter chat"
+                    />
+                </div>
             </div>
         );
     }

@@ -224,12 +224,26 @@ textarea {
 .chats {
     border-radius: 10px;
     margin: 100px;
-    width: 40%;
+    width: 100%;
     display: flex;
     justify-content: center;
     font-size: 25px;
     text-shadow: black 2px 2px;
     color: yellow;
+}
+.bigchat-div {
+    border-left: black 2px solid;
+    width: 50%;
+    margin-left: 200px;
+}
+.Messages {
+    overflow-y: auto;
+    width: 100%;
+    height: 500px;
+}
+.chatmsg {
+    background-color: silver;
+    width: 100%;
     border: black solid 2px;
 }
 @keyframes backgroundchange {
