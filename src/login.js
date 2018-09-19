@@ -32,19 +32,25 @@ class Login extends React.Component {
         return (
             <div className="login">
                 {this.state.error && <div className="error">error message</div>}
-                <input
-                    className="input"
-                    name="email"
-                    placeholder="email"
-                    onChange={this.handleChange}
-                />
-                <input
-                    className="input"
-                    name="password"
-                    placeholder="password"
-                    onChange={this.handleChange}
-                />
-                <button onClick={this.submit}>Login</button>
+                <div className="login-input">
+                    <input
+                        className="input"
+                        name="email"
+                        placeholder="email"
+                        onChange={this.handleChange}
+                    />
+                </div>
+                <div className="login-input">
+                    <input
+                        className="input"
+                        name="password"
+                        placeholder="password"
+                        onChange={this.handleChange}
+                    />
+                </div>
+                <button className="button" onClick={this.submit}>
+                    Login
+                </button>
             </div>
         );
     }

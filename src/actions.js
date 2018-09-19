@@ -48,7 +48,7 @@ export async function onlineUsers(users) {
 export async function disconnectUser(userId) {
     return {
         type: "DISCONNECT",
-        userId
+        userId: userId
     };
 }
 
@@ -63,13 +63,13 @@ export function chatMessages(messages) {
     console.log("working in actions");
     return {
         type: "CHAT_MESSAGES",
-        messages
+        messages: messages
     };
 }
 
 export function chatMessage(message) {
     return {
         type: "CHAT_MESSAGE",
-        message
+        message: message
     };
 }

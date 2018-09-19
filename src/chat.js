@@ -9,7 +9,6 @@ class Chat extends Component {
         this.savechatMessage = this.savechatMessage.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
     }
-    componentDidMount() {}
 
     savechatMessage(e) {
         if (e.which === 13) {
@@ -29,6 +28,7 @@ class Chat extends Component {
         if (!this.elem) {
             return;
         }
+        console.log("checking componentDidUpdate");
         this.elem.scrollTop = this.elem.scrollHeight - this.elem.clientHeight;
     }
     render() {
@@ -37,10 +37,7 @@ class Chat extends Component {
         }
         return (
             <div className="bigchat-div">
-                <div
-                    className="Messages"
-                    ref={element => (this.element = element)}
-                >
+                <div className="Messages" ref={elem => (this.elem = elem)}>
                     {this.props.messages.map(message => (
                         <div className="chats" key={message.chatid}>
                             <div>

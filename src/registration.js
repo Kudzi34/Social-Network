@@ -68,9 +68,11 @@ class Registration extends React.Component {
                         onChange={this.handleChange}
                     />
                 </div>
-                <button className="button" onClick={this.submit}>
-                    Register
-                </button>
+                <div className="regbutton">
+                    <button className="button" onClick={this.submit}>
+                        Register
+                    </button>
+                </div>
             </div>
         );
     }

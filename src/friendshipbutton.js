@@ -66,6 +66,10 @@ export default class Friendshipbutton extends Component {
                 })
                 .then(results => {
                     console.log("After First Request", results);
+                    // socket.on("friendRequestrequest", results => {
+                    //     io.sockets.emit("friendRequest", results);
+                    // });
+
                     this.setState({
                         buttonStatus: "1b",
                         buttonText: "Request is pending. Cancel?"

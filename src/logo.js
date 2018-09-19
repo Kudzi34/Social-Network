@@ -9,8 +9,8 @@ export default function Logo() {
 
     return (
         <div className="logo">
-            <img src="/logo3.png" />
-            ZIMCONNECT
+            <img className="image-logo" src="/logo3.png" />
+            <div className="title">ZIMCONNECT</div>
         </div>
     );
 }

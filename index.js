@@ -334,7 +334,7 @@ io.on("connection", function(socket) {
     ////////////chat//////////////////////////////////////////////////////////////////
     db.getRecentMessages()
         .then(results => {
-            console.log("working!");
+            console.log("chatMessages", results.rows);
             socket.emit("chatMessages", results.rows.reverse());
         })
         .catch(function(error) {
@@ -345,13 +345,13 @@ io.on("connection", function(socket) {
         db.saveChatMsg(userId, message)
             .then(results => {
                 console.log("here are results in saveChatMsg", results);
-                let userInfo = Object.values(results.rows[0]);
+                let userInfo = Object.assign(results.rows[0]);
                 db.getUserInfo(userId)
                     .then(results => {
                         console.log("Here is userInfo:", userInfo);
                         io.sockets.emit(
                             "chatMessage",
-                            Object.values({}, userInfo, results.rows[0])
+                            Object.assign({}, userInfo, results.rows[0])
                         );
                     })
                     .catch(function(err) {

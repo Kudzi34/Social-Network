@@ -24,12 +24,12 @@ let elem;
 if (location.pathname == "/welcome") {
     elem = <Welcome />;
 } else {
-    elem = (getSocket(store),
-    (
+    getSocket(store);
+    elem = (
         <Provider store={store}>
             <App />
         </Provider>
-    ));
+    );
 }
 
 ReactDOM.render(elem, document.querySelector("main"));
