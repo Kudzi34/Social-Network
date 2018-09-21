@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 // }
 
 export default function(state = INITIAL_STATE, action) {
-    console.log("Here is your actions: ", action);
+    //console.log("Here is your actions: ", action);
     if (action.type == "LIST_OF_FRIENDS") {
         state = {
             ...state,
@@ -36,7 +36,7 @@ export default function(state = INITIAL_STATE, action) {
                 //console.log("out super id:", friend.id);
                 //console.log("reciever ID", action.receiver_id);
                 if (friend.id == action.receiver_id) {
-                    console.log("we Are here in reducers acceptRequest!");
+                    //console.log("we Are here in reducers acceptRequest!");
                     return { ...friend, status: (friend.status = 2) };
                 } else {
                     return friend;
@@ -57,13 +57,13 @@ export default function(state = INITIAL_STATE, action) {
         state = {
             ...state,
             onlineUsers: state.onlineUsers.filter(
-                user => user.id != action.user.id
+                user => userId != action.userId
             )
         };
     }
 
     if (action.type == "NEW_USER_ONLINE") {
-        console.log("Out nice new user: ", action.user);
+        //console.log("Out nice new user: ", action.user);
         state = {
             ...state,
             onlineUsers: state.onlineUsers.concat(action.user)
@@ -77,10 +77,18 @@ export default function(state = INITIAL_STATE, action) {
     }
 
     if (action.type == "CHAT_MESSAGE") {
-        console.log("in add chat");
+        //console.log("in add chat");
         state = { ...state, messages: [...state.messages, action.message] };
     }
+    ///////////////friendRequestnotification//////////////////////////////////
+    if (action.type == "FRIEND_REQUEST_NOTIFICATION") {
+        console.log("working in reducer for friendreq!");
+        state = {
+            ...state,
+            notification: action.notification
+        };
+    }
 
-    console.log("Our state", state);
+    //console.log("Our state", state);
     return state;
 }

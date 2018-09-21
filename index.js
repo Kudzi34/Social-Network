@@ -84,7 +84,7 @@ app.get("/user", (req, res) => {
     db.getUserById(req.session.userId)
 
         .then(results => {
-            console.log("info by getUserById ", results.rows);
+            //console.log("info by getUserById ", results.rows);
             res.json(results.rows[0]);
         })
         .catch(err => {});
@@ -99,7 +99,7 @@ app.post("/registration", (req, res) => {
         })
         .then(results => {
             req.session.userId = results.rows[0].id;
-            console.log("session", req.session.userId);
+            //console.log("session", req.session.userId);
             res.json({
                 success: true
             });
@@ -192,7 +192,7 @@ app.get("/getAllFriends", (req, res) => {
     var sender_id = req.session.userId;
     db.checkIfFriends(reciever_id, sender_id)
         .then(results => {
-            console.log("Friend request: ", sender_id);
+            //console.log("Friend request: ", sender_id);
             res.json(results.rows);
         })
         .catch(error => {
@@ -201,7 +201,6 @@ app.get("/getAllFriends", (req, res) => {
 });
 
 app.get("/getFriends", (req, res) => {
-    console.log("running getFriends", req.session);
     db.receiveFriends(req.session.userId)
         .then(results => {
             res.json({ friends: results.rows });
@@ -228,10 +227,30 @@ app.post("/friendRequest", (req, res) => {
     var sender_id = req.session.userId;
     var reciever_id = req.body.reciever_id;
     if (status == 1) {
-        db.newFriendRequest(status, reciever_id, sender_id).then(results => {
-            console.log("Result In new Making Friend row", results.rows[0]);
-            res.json(results.rows[0]);
-        });
+        db.newFriendRequest(status, reciever_id, sender_id)
+            .then(results => {
+                //console.log("Result In new Making Friend row", results.rows[0]);
+                res.json(results.rows[0]);
+            })
+            .then(results => {
+                for (key in onlineUsers) {
+                    if (onlineUsers[key] == reciever_id) {
+                        console.log("working in notification server", key);
+                        let socketReceiverId = key;
+                        io.sockets.sockets[socketReceiverId].emit(
+                            "friendRequestNotification",
+                            {
+                                notification: "You have a new friend request! ",
+                                firstname: req.session.firstname,
+                                lastname: req.session.lastname
+                            }
+                        );
+                    }
+                }
+            })
+            .catch(error => {
+                console.log("Error in GET fRIEND RESQ", error);
+            });
     } else {
         db.createFriendRequest(status, reciever_id, sender_id).then(results => {
             console.log("Results form sending request", results.rows[0]);
@@ -240,13 +259,12 @@ app.post("/friendRequest", (req, res) => {
     }
 });
 app.post("/deleteFriendRequest", (req, res) => {
-    console.log("Delete as friend ");
-    var sender_id = req.session.userId.rows;
-    console.log(sender_id);
+    var sender_id = req.session.userId;
     var reciever_id = req.body.reciever_id;
-    console.log(reciever_id);
-    db.deleteFriendRequest(reciever_id, sender_id).then(() => {
-        res.json("");
+    console.log("Delete as friend ", sender_id, reciever_id);
+
+    db.deleteFriendRequest(reciever_id, sender_id).then(results => {
+        res.json(results.rows[0]);
     });
 });
 //////////////////Do NOT TOUCH////////////////////////////////////////////////////////////////////
@@ -284,7 +302,6 @@ io.on("connection", function(socket) {
     // put to DB
 
     db.getUsersByIds(arrayOfUserIds).then(results => {
-        console.log("Array of Users: ", results.rows);
         // results = array of objects that contains users name, email, etc.
 
         // now we have to take this results and emit them.
@@ -334,21 +351,27 @@ io.on("connection", function(socket) {
     ////////////chat//////////////////////////////////////////////////////////////////
     db.getRecentMessages()
         .then(results => {
-            console.log("chatMessages", results.rows);
+            //            console.log("chatMessages", results.rows);
             socket.emit("chatMessages", results.rows.reverse());
         })
         .catch(function(error) {
             console.log("Error occured in getting chat messages", error);
         });
+    /////////bonus request notification//////////////////////////////////////
+    // socket.emit("friendreqnotice", rows[0]);
+    // for (let socketId in onlineUsers) {
+    //     if (onlineUsers[socketId] == req.params.id) {
+    //         io.sockets.sockets[socketId].emit("friendreqnotice", {});
+    //         console.log("Friend req emission works!");
+    //     }
+    // }
 
     socket.on("chat", message => {
         db.saveChatMsg(userId, message)
             .then(results => {
-                console.log("here are results in saveChatMsg", results);
                 let userInfo = Object.assign(results.rows[0]);
                 db.getUserInfo(userId)
                     .then(results => {
-                        console.log("Here is userInfo:", userInfo);
                         io.sockets.emit(
                             "chatMessage",
                             Object.assign({}, userInfo, results.rows[0])

@@ -5,7 +5,8 @@ import {
     disconnectUser,
     newUserOnline,
     chatMessages,
-    chatMessage
+    chatMessage,
+    friendRequestNotification
 } from "./actions";
 
 let socket;
@@ -14,30 +15,34 @@ export function getSocket(store) {
     if (!socket) {
         socket = io.connect();
         socket.on("onlineUsers", data => {
-            console.log("All Online Users in socket.js: ", data);
+            //console.log("All Online Users in socket.js: ", data);
             store.dispatch(onlineUsers(data));
         });
         //
         socket.on("newUserOnline", data => {
-            console.log("New user online in socket.js", data);
+            //console.log("New user online in socket.js", data);
 
             store.dispatch(newUserOnline(data));
         });
 
-        socket.on("disonnect", data => {
-            console.log("We have Disconnected in Socket.js", data);
+        socket.on("disconnect", data => {
+            //console.log("We have Disconnected in Socket.js", data);
 
             store.dispatch(disconnectUser(data));
         });
         /////chat///////////////////////////////////////////////////////////////////////////////
         socket.on("chatMessage", message => {
-            console.log("Here is message in socket:", message);
+            //console.log("Here is message in socket:", message);
             store.dispatch(chatMessage(message));
         });
 
         socket.on("chatMessages", messages => {
-            console.log("messages in socket.js");
+            //console.log("messages in socket.js");
             store.dispatch(chatMessages(messages));
+        });
+        socket.on("friendRequestNotification", notification => {
+            console.log("dispatch working friendreq");
+            store.dispatch(friendRequestNotification(notification));
         });
     }
 

@@ -96,6 +96,7 @@ exports.deleteFriendRequest = (reciever_id, sender_id) => {
     const q = `
     DELETE FROM friendships
     WHERE (reciever_id =$1 AND sender_id =$2)
+    OR (reciever_id =$2 AND sender_id =$1)
     `;
     return db.query(q, [reciever_id, sender_id]);
 };

@@ -10,12 +10,10 @@ export async function receiveFriends() {
 }
 
 export async function unfriend(props) {
-    console.log("Props:", props);
     var receiver_id = props;
     const { data } = await axios.post("/deleteFriendRequest", {
         receiver_id: receiver_id
     });
-    console.log("Data in ACTIONS in Receive Friends", data);
     return {
         type: "UNFRIEND",
         receiver_id
@@ -60,7 +58,6 @@ export async function newUserOnline(user) {
 }
 //////chat functions////////////////////////
 export function chatMessages(messages) {
-    console.log("working in actions");
     return {
         type: "CHAT_MESSAGES",
         messages: messages
@@ -71,5 +68,13 @@ export function chatMessage(message) {
     return {
         type: "CHAT_MESSAGE",
         message: message
+    };
+}
+export function friendRequestNotification(notification) {
+    console.log("working actions friendreq!");
+
+    return {
+        type: "FRIEND_REQUEST_NOTIFICATION",
+        notification: notification
     };
 }

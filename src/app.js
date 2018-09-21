@@ -10,6 +10,9 @@ import Otherprofile from "./otherprofile";
 import Friends from "./friends";
 import OnlineUsers from "./onlineUsers";
 import Chat from "./chat";
+import Friendnotif from "./notification";
+import { getSocket } from "./socket";
+import { connect } from "react-redux";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -30,7 +33,7 @@ export default class App extends React.Component {
     }
     componentDidMount() {
         axios.get("/user").then(({ data }) => {
-            console.log("data from app", data);
+            //console.log("data from app", data);
             if (!data.imageurl) {
                 data.imageurl = "/image2.png";
             }
@@ -82,6 +85,7 @@ export default class App extends React.Component {
                         lastname={this.state.lastname}
                         clickHandler={this.makeUploaderVisible}
                     />
+                    <Friendnotif />
                 </div>
                 {this.state.uploaderIsVisible && (
                     <Uploader updateImage={this.updateImage} />

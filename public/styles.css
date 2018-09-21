@@ -270,12 +270,21 @@ textarea {
     float: left;
 }
 .title {
+    text-align: center;
     animation-name: backgroundchange;
     animation-duration: 3s;
     background-color: black;
     display: flex;
     flex-direction: column;
     align-content: center;
+}
+.notification {
+    border: silver solid 4px;
+    font-size: 50px;
+    color: white;
+    width: 50%;
+    height: 100px;
+    background-color: red;
 }
 @keyframes backgroundchange {
     from {

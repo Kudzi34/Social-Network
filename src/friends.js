@@ -14,7 +14,7 @@ class Friends extends React.Component {
     }
 
     render() {
-        console.log("Our Props: ", this.props);
+        //console.log("Our Props: ", this.props);
         if (!this.props.friends) {
             return (
                 <div> Loading... </div> // you can replace it with some funny or useful image/text
@@ -48,7 +48,7 @@ class Friends extends React.Component {
                     <h3> Friend Requests: </h3>
                     {this.props.wannabes.map(friend => (
                         <div key={friend.id}>
-                            <img src={friend.imageurl} />
+                            <img className="images" src={friend.imageurl} />
                             <div className="nameOfTheFriend">
                                 <p>
                                     {friend.firstname} {friend.lastname}
@@ -72,7 +72,7 @@ class Friends extends React.Component {
 }
 
 const mapStateToProps = function(state) {
-    console.log("state", state);
+    //console.log("state", state);
     return {
         friends:
             state.friends && state.friends.filter(user => user.status == 2),

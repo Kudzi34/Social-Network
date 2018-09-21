@@ -24,7 +24,7 @@ export default class Friendshipbutton extends Component {
                 }
             })
             .then(results => {
-                console.log("Results from axios get-friends", results);
+                //console.log("Results from axios get-friends", results);
 
                 if (results.data == "") {
                     this.setState({
@@ -53,11 +53,11 @@ export default class Friendshipbutton extends Component {
     }
 
     friendRequest() {
-        console.log("no friends yet!", this.props.reciever_id);
+        //console.log("no friends yet!", this.props.reciever_id);
         var reciever_id = this.props.reciever_id;
 
         if (this.state.buttonStatus == 0) {
-            console.log("We are here");
+            //console.log("We are here");
             var status = 1;
             axios
                 .post("/friendRequest", {
@@ -65,7 +65,7 @@ export default class Friendshipbutton extends Component {
                     reciever_id: reciever_id
                 })
                 .then(results => {
-                    console.log("After First Request", results);
+                    //console.log("After First Request", results);
                     // socket.on("friendRequestrequest", results => {
                     //     io.sockets.emit("friendRequest", results);
                     // });
@@ -85,7 +85,7 @@ export default class Friendshipbutton extends Component {
                     reciever_id: reciever_id
                 })
                 .then(results => {
-                    console.log("After Pending", results);
+                    //console.log("After Pending", results);
                     this.setState({
                         buttonStatus: 2,
                         buttonText: "Friends"
@@ -98,7 +98,7 @@ export default class Friendshipbutton extends Component {
                     reciever_id: reciever_id
                 })
                 .then(results => {
-                    console.log("After Deleting", results);
+                    //console.log("After Deleting", results);
                     this.setState({
                         buttonText: "Make A Friend Request",
                         buttonStatus: 0

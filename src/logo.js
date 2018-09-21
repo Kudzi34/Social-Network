@@ -10,7 +10,9 @@ export default function Logo() {
     return (
         <div className="logo">
             <img className="image-logo" src="/logo3.png" />
+
             <div className="title">ZIMCONNECT</div>
+            <h3 className="title">Connecting Zimbabweans</h3>
         </div>
     );
 }

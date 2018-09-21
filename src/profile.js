@@ -1,8 +1,6 @@
 import React from "react";
 
 export default function Profile(props) {
-    console.log("props inside of bio", props);
-
     return (
         <div className="profilediv-main">
             <img
